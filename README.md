@@ -6,9 +6,8 @@
 4. Clone this repository.
 
 5. Create the “analytics_connections” file with this format. 
-
-docker secret create analytics_connections - << END
 ```
+docker secret create analytics_connections - << END
 platform_name:      # replace platform_name, e.g. uma
   host: ip        # replace ip, e.g. 192.168.0.1
   port: p         # replace p with the port, e.g. 8080
@@ -27,6 +26,7 @@ Note that the choice of values must the same for your ".yaml" -and the "analytic
 
 
 7. Install influxdb with docker. It is recomeded to do the configuration withing the ".yaml" file. 
+```
 services:
   influxdb:
     image: influxdb:1.6
@@ -39,6 +39,7 @@ services:
     volumes:
       - /home/isak/Analytics/influxdb.conf:/etc/influxdb/influxdb.conf
       - /home/isak/influxdb_data:/var/lib/influxdb
+```
 
 8. Run “./Analytics/install.sh”. This will create and start all containers.
 
