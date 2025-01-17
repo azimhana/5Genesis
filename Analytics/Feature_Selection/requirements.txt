@@ -1,0 +1,9 @@
+flask==1.1.1
+numpy==1.18.1
+pandas==1.2.3
+scikit-learn==0.22.1
+# statsmodels==0.11.1
+jinja2<3.1.0
+itsdangerous==2.0.1
+werkzeug==2.0.3
+statsmodels==0.13.2
