@@ -9,13 +9,13 @@
 
 docker secret create analytics_connections - << END
 platform_name:      # replace platform_name, e.g. uma
-#    host: ip        # replace ip, e.g. 192.168.0.1
-#    port: p         # replace p with the port, e.g. 8080
-#    user: u         # replace u with the user name, e.g. user1
-#    password: pw    # replace pw with the password
-#    databases:
-#    - db_name1      # replace db_name1 with your database name(s)
-#    - db_name2      # replace or delete if there is only one database
+    host: ip        # replace ip, e.g. 192.168.0.1
+    port: p         # replace p with the port, e.g. 8080
+    user: u         # replace u with the user name, e.g. user1
+    password: pw    # replace pw with the password
+    databases:
+    - db_name1      # replace db_name1 with your database name(s)
+    - db_name2      # replace or delete if there is only one database
 END
 Note that the choice of values must the same for your ".yaml" -and the "analytics_connections” -file. 
 
