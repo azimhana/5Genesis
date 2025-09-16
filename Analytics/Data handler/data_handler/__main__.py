@@ -164,12 +164,45 @@ if __name__ == '__main__':
 
     if secrets:
         connections = yaml.safe_load(secrets)
+        # support either top-level entries (e.g., "uma": {...})
+        # or a flat config (single dict)
+        if isinstance(connections, dict):
+            iterable = connections.items()
+        else:
+            iterable = [("default", connections)]
 
-        # Establish database connections
+        for con_name, con_details in iterable:
+            if not isinstance(con_details, dict):
+                print(f"[WARN] Skipping malformed entry {con_name}: not a dict")
+                continue
 
-        for con_name, con_details in connections.items():
-            for database in con_details["databases"]:
-                sources[con_name + '_' + database] = DataCollector(con_details["host"], con_details["port"], con_details["user"], con_details["password"], database)
+            # v2 shape: url/org/bucket/token  ✅
+            if all(k in con_details for k in ("url", "org", "bucket", "token")):
+                sources[con_name] = DataCollector(
+                    url=con_details["url"],
+                    org=con_details["org"],
+                    bucket=con_details["bucket"],
+                    token=con_details["token"],
+                )
+                continue
+
+            # legacy v1 shape (had 'databases'); if url/org/token are present we can still map each db -> bucket
+            if "databases" in con_details:
+                if all(k in con_details for k in ("url", "org", "token")):
+                    for db in con_details["databases"]:
+                        bucket = db if isinstance(db, str) else str(db)
+                        key = f"{con_name}_{bucket}"
+                        sources[key] = DataCollector(
+                            url=con_details["url"],
+                            org=con_details["org"],
+                            bucket=bucket,
+                            token=con_details["token"],
+                        )
+                else:
+                    print(f"[WARN] Skipping legacy v1 source '{con_name}': need url/org/token to work with InfluxDB v2.")
+                continue
+
+            print(f"[WARN] Unrecognized config for '{con_name}': {list(con_details.keys())}")
 
     # Data cache
     data_cache = {}

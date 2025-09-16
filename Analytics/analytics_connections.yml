@@ -1,0 +1,5 @@
+﻿uma:
+  url: http://influxdb:8086
+  org: uma-org
+  bucket: testdb
+  token: ONM9Mp7Jharh45XRxsqAoZ7ZWNdbWKri9cPEIFWI05UPAeSuY_mwVshei6ilikBZNMICZHe3q7wVAnjg4dmdcQ==
